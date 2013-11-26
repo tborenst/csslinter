@@ -21,15 +21,13 @@ In order to validate the correctness of properties and their values, we use the 
 
 In order to add Property-Value pairs, you need to change the following code in `dictionary.js`:
 
-``
+```javascript
 module.exports = {
-
 	background: [isColor, isUrl],
 	position: ["static", "absolute", "fixed", "relative", "inherit"],
 	color: [isColor]
-	
 }
-``
+```
 
 You can add two types of values: strings or functions. In the example above `position` simply has an array of strings it accepts as values. On the other hand, `background` has two functions that it accepts as values. The functions should take in a string `value` and return true or false. For example, `isColor` accepts a string and uses regex to determine whether it is one of the default CSS colors or in the form of "#XXX" or "#XXXXXX".
 
