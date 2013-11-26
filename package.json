@@ -1,0 +1,28 @@
+{
+  "name": "csslint",
+  "version": "1.0.0",
+  "description": "CSS linter",
+  "main": "csslint.js",
+  "keywords": [
+    "css",
+    "stylesheet",
+    "linter"
+  ],
+  "author": {
+    "name": "Tomer Borenstein",
+    "email": "tomer.boren@gmail.com"
+  },
+  "files": [
+    "csslint.js",
+    "dictionary.js",
+    "linebyline.js",
+    "loadhtml.js"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "css-parse": "~1.6.0",
+    "jsdom": "~0.8.8"
+  },
+  "devDependencies": {},
+  "engine": {"node": "v0.10.20"}
+}
