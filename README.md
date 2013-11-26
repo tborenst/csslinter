@@ -1,4 +1,4 @@
-css-lint
+css-linter
 ======
 This is a CSS linter created for the Carnegie Mellon Univeristy course *'15-237: Developing Cross Platform Web Applications'*.
 

@@ -1,5 +1,5 @@
 {
-  "name": "csslint",
+  "name": "csslinter",
   "version": "1.0.0",
   "description": "CSS linter",
   "main": "csslint.js",
