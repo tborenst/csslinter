@@ -23,9 +23,11 @@ In order to add Property-Value pairs, you need to change the following code in `
 
 ``
 module.exports = {
+
 	background: [isColor, isUrl],
 	position: ["static", "absolute", "fixed", "relative", "inherit"],
 	color: [isColor]
+	
 }
 ``
 
