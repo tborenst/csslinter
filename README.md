@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 css-lint
 ======
 This is a CSS linter created for the Carnegie Mellon Univeristy course *'15-237: Developing Cross Platform Web Applications'*.
@@ -38,3 +39,7 @@ You can add two types of values: strings or functions. In the example above `pos
 
 ##Note About Declaration Count
 If you would like to change the number of declaration counts allowed within a single rule, see the 6th line of the `parseCssText` function in `csslint.js`.
+=======
+csslint
+=======
+>>>>>>> e191276978c5872a19d4b9c8007d63b349ff7062
