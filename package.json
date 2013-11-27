@@ -1,13 +1,16 @@
 {
   "name": "csslinter",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "CSS linter",
   "main": "csslint.js",
   "repository"    : {"type": "git", "url": "git@github.com:tborenst/csslint.git"},
   "keywords": [
     "css",
     "stylesheet",
-    "linter"
+    "lint",
+    "linter",
+    "csslint",
+    "csslinter"
   ],
   "author": {
     "name": "Tomer Borenstein",
