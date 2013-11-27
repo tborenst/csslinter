@@ -2,6 +2,8 @@ css-linter
 ======
 This is a CSS linter created for the Carnegie Mellon Univeristy course *'15-237: Developing Cross Platform Web Applications'*.
 
+In order to download and use, simply `npm install csslinter`.
+
 MIT Lisence.
 
 ##Functionality
