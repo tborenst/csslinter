@@ -31,10 +31,39 @@ module.exports = {
 
 You can add two types of values: strings or functions. In the example above `position` simply has an array of strings it accepts as values. On the other hand, `background` has two functions that it accepts as values. The functions should take in a string `value` and return true or false. For example, `isColor` accepts a string and uses regex to determine whether it is one of the default CSS colors or in the form of "#XXX" or "#XXXXXX".
 
+##Our "Spacing Style Guide"
+The linter checks for the following spacing format:
+
+* Ignore spacing and indentation within comments.
+* For any oneliners (e.g. "background { color: black; }"):
+	* exactly 1 space before "{" and exactly 1 after "{".
+	* exactly 0 space before ";" and exactly 1 space before "}".
+* Specifically not for oneliners:
+	* "}" is the only thing on the line.
+* For everything:
+	* exactly 0 space before "," and exactly 1 space after.
+	* exactly 0 space before ":" and exactly 1 space after.
+	* exactly 0 space before ";" and nothing after.
+	* all declarations end with ";".
+
+Note that any comments will be ignored by the linter as if they are not there, but whitespace around the comments will remain. So:
+```css
+body {
+	color: /* some random comment */ black;
+}
+```
+Becomes
+```css
+body {
+	color:  black;
+}
+```
+And hence will be flagged as an error by the linter (two spaces after ":").
+
 ##How to Use
 `csslint.js` exports two functions: `parseCssFile(path, callback)` and `parseCssText(text)`.
 
-`parseCssFile` is asynchronous (clearly...) and the callback passed to it should take two arguments `(err, result)`. If there are any errors with the linter itself or any of the dependencies, `err` will be set to true, and otherwise null. The `result` object is of the form `{err: boolean, messages[errmsg1, errmsg2, ...]}` (where `errmsg1` and `errmsg2` are strings). The same `result` object is returned *synchronously* from `parseCssText`.
+`parseCssFile` is asynchronous (clearly...) and the callback passed to it should take two arguments `(err, result)`. If there are any errors with the linter itself or any of the dependencies, `err` will be set to true, and otherwise null. The `result` object is of the form `{err: boolean, messages: [errmsg1, errmsg2, ...]}` (where `errmsg1` and `errmsg2` are strings). The same `result` object is returned *synchronously* from `parseCssText`.
 
 ##Note About Declaration Count
 If you would like to change the number of declaration counts allowed within a single rule, see the 6th line of the `parseCssText` function in `csslint.js`.
