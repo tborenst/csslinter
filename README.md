@@ -1,6 +1,6 @@
 css-linter
 ======
-This is a CSS linter created for the Carnegie Mellon Univeristy course *'15-237: Developing Cross Platform Web Applications'*.
+This is a CSS linter created for the Carnegie Mellon University course *'15-237: Developing Cross Platform Web Applications'*.
 
 In order to download and use, simply `npm install csslinter`.
 
@@ -13,7 +13,7 @@ Currently, the css linter has the following functionality:
 * Validating consistent indentation (using tab characters or 4-space tabs).
 * Validating newlines following every declaration and rule.
 * Validating property uniqueness within any rule.
-* Validating declaraciton count (default: no more than 25 declarations/rule).
+* Validating declaration count (default: no more than 25 declarations/rule).
 * Validating correct spacing according to our style guide (see below for more info).
 
 Additionally, the code exists for extracting *ids* and *classes* from .HTML files in case you want to add the functionality to cross-reference *ids* or *classes* between .HTML and .CSS files. The code is in `csslint.js`, but not exported to the module. 
