@@ -92,35 +92,35 @@ var validateSpacing = function(lines){
 			// check for exactly one space after "{"
 			var open = line.indexOf("{");
 			if(line.charAt(open+1) !== " " || line.charAt(open+2) === " "){
-				var line = (i+1);
+				var err_line = (i+1);
 				var msg = "bad spacing"; 
-				result.errors.push(utils.createErrorMessage(line, msg));
+				result.errors.push(utils.createErrorMessage(err_line, msg));
 			}
 			// check for 0 space before ":" and 1 space after
 			var colon = line.indexOf(":");
 			if(line.charAt(colon-1) === " " || line.charAt(colon+1) !== " "
 				|| line.charAt(colon+2) === " "){
-				var line = (i+1);
+				var err_line = (i+1);
 				var msg = "bad spacing";
-				result.errors.push(utils.createErrorMessage(line, msg));
+				result.errors.push(utils.createErrorMessage(err_line, msg));
 			}
 			// check for "; " before "}" and 0 space before ";"
 			var semicolon = line.indexOf(";");
 			var close = line.indexOf("}");
 			if(semicolon === -1){
-				var line = (i+1);
+				var err_line = (i+1);
 				var msg = "no semicolon";
-				result.errors.push(utils.createErrorMessage(line, msg));
+				result.errors.push(utils.createErrorMessage(err_line, msg));
 			} else {
 				if(line.charAt(semicolon-1) === " "){
-					var line = (i+1);
+					var err_line = (i+1);
 					var msg = "bad spacing";
-					result.errors.push(utils.createErrorMessage(line, msg));
+					result.errors.push(utils.createErrorMessage(err_line, msg));
 				}
 				if(line.charAt(close-1) !== " " && line.charAt(close-2) !== ";"){
-					var line = (i+1);
+					var err_line = (i+1);
 					var msg = "bad spacing";
-					result.errors.push(utils.createErrorMessage(line, msg));
+					result.errors.push(utils.createErrorMessage(err_line, msg));
 				}
 			}
 		} else if(utils.contains(line, "{")){
@@ -129,17 +129,17 @@ var validateSpacing = function(lines){
 			var broken = line.split(",");
 			for(var j = 1; j < broken.length; j++){
 				if(broken[j].charAt(0) !== " " || broken[j].charAt(1) === " "){
-					var line = (i+1);
+					var err_line = (i+1);
 					var msg = "bad spacing";
-					result.errors.push(utils.createErrorMessage(line, msg));
+					result.errors.push(utils.createErrorMessage(err_line, msg));
 				}
 			}
 			// check for exactly 1 space before "{"
 			var open = line.indexOf("{");
 			if(line.charAt(open-1) !== " " && line.charAt(open-2) === " "){
-				var line = (i+1);
+				var err_line = (i+1);
 				var msg = "bad spacing";
-				result.errors.push(utils.createErrorMessage(line, msg));
+				result.errors.push(utils.createErrorMessage(err_line, msg));
 			}
 		} else if(utils.contains(line, ":")){
 			// declaration
@@ -147,30 +147,30 @@ var validateSpacing = function(lines){
 			var colon = line.indexOf(":");
 			if(line.charAt(colon-1) === " " || line.charAt(colon+1) !== " "
 				|| line.charAt(colon+2) === " "){
-				var line = (i+1);
+				var err_line = (i+1);
 				var msg = "bad spacing";
-				result.errors.push(utils.createErrorMessage(line, msg));
+				result.errors.push(utils.createErrorMessage(err_line, msg));
 			}
 			// check for ";", with 0 space before
 			var semicolon = line.indexOf(";");
 			if(semicolon === -1){
-				var line = (i+1);
+				var err_line = (i+1);
 				var msg = "no semicolon";
-				result.errors.push(utils.createErrorMessage(line, msg));
+				result.errors.push(utils.createErrorMessage(err_line, msg));
 			} else {
 				if(line.charAt(semicolon-1) === " "){
-					var line = (i+1);
+					var err_line = (i+1);
 					var msg = "bad spacing";
-					result.errors.push(utils.createErrorMessage(line, msg));
+					result.errors.push(utils.createErrorMessage(err_line, msg));
 				}
 			}
 		} else if(utils.contains(line, "}")){
 			// closer
 			// check it's the only thing on that line
 			if(line.charAt(0) !== "}" || line.slice(1).search(/\S/) !== -1){
-				var line = (i+1);
+				var err_line = (i+1);
 				var msg = "bad spacing";
-				result.errors.push(utils.createErrorMessage(line, msg));
+				result.errors.push(utils.createErrorMessage(err_line, msg));
 			}
 		}
 	}

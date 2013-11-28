@@ -73,10 +73,10 @@ var validatePropertyValuePairs = function(tree, dictionary){
 				var valid = validatePropertyValue(property, value, dictionary);
 				if(!valid){
 					// add update the result object with appropriate message
-					var line = dec.position.start.line;
+					var err_line = dec.position.start.line;
 					var msg = "invalid property/value pair (" 
 						    + property + "/" + value + ")";
-					result.errors.push(utils.createErrorMessage(line, msg));
+					result.errors.push(utils.createErrorMessage(err_line, msg));
 				}
 			}
 		}
@@ -124,14 +124,14 @@ var validateIndentation = function(tree, spaces){
 		var rPos = rule.position;
 		// check indentation for rule
 		if(rule.type !== "comment" && rPos.start.column !== 1){
-			var line = rPos.start.line;
+			var err_line = rPos.start.line;
 			var msg = "bad indentation";
-			result.errors.push(utils.createErrorMessage(line, msg));
+			result.errors.push(utils.createErrorMessage(err_line, msg));
 		}
 		if(rule.type !== "comment" && !ruleIsOneLiner(rule) && rPos.end.column !== 2){
-			var line = rPos.end.line;
+			var err_line = rPos.end.line;
 			var msg = "bad indentation";
-			result.errors.push(utils.createErrorMessage(line, msg));
+			result.errors.push(utils.createErrorMessage(err_line, msg));
 		}
 		if(rule.type !== "comment" && !ruleIsOneLiner(rule)){
 			// only check declaration indentation for non-oneliners
@@ -141,9 +141,9 @@ var validateIndentation = function(tree, spaces){
 					var dec = decs[j];
 					var dPos = dec.position;
 					if(dec.type !== "comment" && dPos.start.column !== spaces+1){
-						var line = dPos.start.line;
+						var err_line = dPos.start.line;
 						var msg = "bad indentation";
-						result.errors.push(utils.createErrorMessage(line, msg));
+						result.errors.push(utils.createErrorMessage(err_line, msg));
 					}
 				}
 			}
@@ -172,9 +172,9 @@ var validateNewlines = function(tree){
 		var rule1 = rules[i-1];
 		var rule2 = rules[i];
 		if(i !== rules.length && rule1.position.end.line === rule2.position.start.line){
-			var line = rule1.position.end.line;
+			var err_line = rule1.position.end.line;
 			var msg = "missing newline between rules"; 
-			result.errors.push(utils.createErrorMessage(line, msg));
+			result.errors.push(utils.createErrorMessage(err_line, msg));
 		}
 		var decs = rule1.declarations;
 		if(decs){
@@ -183,9 +183,9 @@ var validateNewlines = function(tree){
 				var dec2 = decs[j];
 				if(j !== decs.length && dec1.position.end.line === dec2.position.start.line
 					&& dec1.type !== "comment" && dec2.type !== "comment"){
-					var line = dec1.position.end.line;
+					var err_line = dec1.position.end.line;
 					var msg = "missing newline between declarations"
-					result.errors.push(utils.createErrorMessage(line, msg));
+					result.errors.push(utils.createErrorMessage(err_line, msg));
 				}
 			}
 		}
@@ -210,9 +210,9 @@ var validatePropertyUniqueness = function(tree){
 				var property = dec.property;
 				if(properties.indexOf(property) !== -1){
 					// property already exists in this rule
-					var line = dec.position.start.line;
+					var err_line = dec.position.start.line;
 					var msg = "duplicate property (" + property + ")"; 
-					result.messages.push(utils.createErrorMessage(line, msg));
+					result.messages.push(utils.createErrorMessage(err_line, msg));
 				} else {
 					properties.push(property);
 				}
@@ -236,13 +236,13 @@ var validateDeclarationCount = function(tree, count){
 		var rule = rules[i];
 		var decs = rule.declarations;
 		if(ruleIsOneLiner(rule) && decs.length > 1){
-			var line = rule.position.start.line;
+			var err_line = rule.position.start.line;
 			var msg = "rule (oneliner) has too many declarations";
-			result.errors.push(utils.createErrorMessage(line, msg));
+			result.errors.push(utils.createErrorMessage(err_line, msg));
 		} else if(decs.length > count) {
-			var line = rule.position.start.line;
+			var err_line = rule.position.start.line;
 			var msg = "rule has too many declarations"
-			result.errors.push(utils.createErrorMessage(line, msg));
+			result.errors.push(utils.createErrorMessage(err_line, msg));
 		}
 	}
 	return result;
