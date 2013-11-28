@@ -308,8 +308,6 @@ var getAllClasses = function(htmlFilePath, callback){
 	});
 }
 
-console.log(parseCssText("p { margin-top: 10px }"));
-
 module.exports = {
 	parseCssFile: parseCssFile,
 	parseCssText: parseCssText
