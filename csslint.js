@@ -2,6 +2,7 @@
 // Imports
 //====
 var util = require("util");
+var utils = require("./utils");
 var fs = require("fs");
 var cssparse = require("css-parse");
 var cssDictionary = require("./dictionary.js");
@@ -45,7 +46,6 @@ var parseCssText = function(text){
 				lineByLine.analyzeCssText(text)];
 	var combined_result = {errors: []};
 	for(var i = 0; i < all_results.length; i++){
-		console.log(res);
 		var res = all_results[i];
 		for(var j = 0; j < res.errors.length; j++){
 			combined_result.errors.push(res.errors[j]);
@@ -76,7 +76,7 @@ var validatePropertyValuePairs = function(tree, dictionary){
 					var line = dec.position.start.line;
 					var msg = "invalid property/value pair (" 
 						    + property + "/" + value + ")";
-					result.errors.push(createErrorMessage(line, msg));
+					result.errors.push(utils.createErrorMessage(line, msg));
 				}
 			}
 		}
@@ -126,12 +126,12 @@ var validateIndentation = function(tree, spaces){
 		if(rule.type !== "comment" && rPos.start.column !== 1){
 			var line = rPos.start.line;
 			var msg = "bad indentation";
-			result.errors.push(createErrorMessage(line, msg));
+			result.errors.push(utils.createErrorMessage(line, msg));
 		}
 		if(rule.type !== "comment" && !ruleIsOneLiner(rule) && rPos.end.column !== 2){
 			var line = rPos.end.line;
 			var msg = "bad indentation";
-			result.errors.push(createErrorMessage(line, msg));
+			result.errors.push(utils.createErrorMessage(line, msg));
 		}
 		if(rule.type !== "comment" && !ruleIsOneLiner(rule)){
 			// only check declaration indentation for non-oneliners
@@ -143,7 +143,7 @@ var validateIndentation = function(tree, spaces){
 					if(dec.type !== "comment" && dPos.start.column !== spaces+1){
 						var line = dPos.start.line;
 						var msg = "bad indentation";
-						result.errors.push(createErrorMessage(line, msg));
+						result.errors.push(utils.createErrorMessage(line, msg));
 					}
 				}
 			}
@@ -174,7 +174,7 @@ var validateNewlines = function(tree){
 		if(i !== rules.length && rule1.position.end.line === rule2.position.start.line){
 			var line = rule1.position.end.line;
 			var msg = "missing newline between rules"; 
-			result.errors.push(createErrorMessage(line, msg));
+			result.errors.push(utils.createErrorMessage(line, msg));
 		}
 		var decs = rule1.declarations;
 		if(decs){
@@ -185,7 +185,7 @@ var validateNewlines = function(tree){
 					&& dec1.type !== "comment" && dec2.type !== "comment"){
 					var line = dec1.position.end.line;
 					var msg = "missing newline between declarations"
-					result.errors.push(createErrorMessage(line, msg));
+					result.errors.push(utils.createErrorMessage(line, msg));
 				}
 			}
 		}
@@ -212,7 +212,7 @@ var validatePropertyUniqueness = function(tree){
 					// property already exists in this rule
 					var line = dec.position.start.line;
 					var msg = "duplicate property (" + property + ")"; 
-					result.messages.push(createErrorMessage(line, msg));
+					result.messages.push(utils.createErrorMessage(line, msg));
 				} else {
 					properties.push(property);
 				}
@@ -238,11 +238,11 @@ var validateDeclarationCount = function(tree, count){
 		if(ruleIsOneLiner(rule) && decs.length > 1){
 			var line = rule.position.start.line;
 			var msg = "rule (oneliner) has too many declarations";
-			result.errors.push(createErrorMessage(line, msg));
+			result.errors.push(utils.createErrorMessage(line, msg));
 		} else if(decs.length > count) {
 			var line = rule.position.start.line;
 			var msg = "rule has too many declarations"
-			result.errors.push(createErrorMessage(line, msg));
+			result.errors.push(utils.createErrorMessage(line, msg));
 		}
 	}
 	return result;
@@ -308,16 +308,7 @@ var getAllClasses = function(htmlFilePath, callback){
 	});
 }
 
-//====
-// Helper function that creates and returns an error message object given a line
-// number and a message
-//====
-var createErrorMessage = function(line, msg){
-	var err_msg = {};
-	err_msg.line = line;
-	err_msg.msg = msg;
-	return err_msg;
-}
+console.log(parseCssText("p { margin-top: 10px }"));
 
 module.exports = {
 	parseCssFile: parseCssFile,

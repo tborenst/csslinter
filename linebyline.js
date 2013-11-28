@@ -6,6 +6,7 @@
 //====
 
 var fs = require("fs");
+var utils = require("./utils.js");
 
 //====
 // Callback should accept (err, result), where result is an object:
@@ -74,13 +75,6 @@ var removeSpacesAfter = function(string, index){
 }
 
 //====
-// Helper method: does string contain substring?
-//====
-var contains = function(string, substring){
-	return (string.indexOf(substring) !== -1);
-}
-
-//====
 // Validate that the spacing in the CSS code is according to style guide:
 // - exactly 1 space before "{" and exactly 1 after "{" (oneliner).
 // - exactly 0 space before "," and exactly 1 space after ",".
@@ -93,14 +87,14 @@ var validateSpacing = function(lines){
 	var result = {errors: []}
 	for(var i = 0; i < lines.length; i++){
 		var line = lines[i];
-		if(contains(line, "{") && contains(line, "}") && contains(line, ":")){
+		if(utils.contains(line, "{") && utils.contains(line, "}") && utils.contains(line, ":")){
 			// oneliner
 			// check for exactly one space after "{"
 			var open = line.indexOf("{");
 			if(line.charAt(open+1) !== " " || line.charAt(open+2) === " "){
 				var line = (i+1);
 				var msg = "bad spacing"; 
-				result.errors.push(createErrorMessage(line, msg));
+				result.errors.push(utils.createErrorMessage(line, msg));
 			}
 			// check for 0 space before ":" and 1 space after
 			var colon = line.indexOf(":");
@@ -108,7 +102,7 @@ var validateSpacing = function(lines){
 				|| line.charAt(colon+2) === " "){
 				var line = (i+1);
 				var msg = "bad spacing";
-				result.errors.push(createErrorMessage(line, msg));
+				result.errors.push(utils.createErrorMessage(line, msg));
 			}
 			// check for "; " before "}" and 0 space before ";"
 			var semicolon = line.indexOf(";");
@@ -116,20 +110,20 @@ var validateSpacing = function(lines){
 			if(semicolon === -1){
 				var line = (i+1);
 				var msg = "no semicolon";
-				result.errors.push(createErrorMessage(line, msg));
+				result.errors.push(utils.createErrorMessage(line, msg));
 			} else {
 				if(line.charAt(semicolon-1) === " "){
 					var line = (i+1);
 					var msg = "bad spacing";
-					result.errors.push(createErrorMessage(line, msg));
+					result.errors.push(utils.createErrorMessage(line, msg));
 				}
 				if(line.charAt(close-1) !== " " && line.charAt(close-2) !== ";"){
 					var line = (i+1);
 					var msg = "bad spacing";
-					result.errors.push(createErrorMessage(line, msg));
+					result.errors.push(utils.createErrorMessage(line, msg));
 				}
 			}
-		} else if(contains(line, "{")){
+		} else if(utils.contains(line, "{")){
 			// selector line
 			// check for spaces after any ","
 			var broken = line.split(",");
@@ -137,7 +131,7 @@ var validateSpacing = function(lines){
 				if(broken[j].charAt(0) !== " " || broken[j].charAt(1) === " "){
 					var line = (i+1);
 					var msg = "bad spacing";
-					result.errors.push(createErrorMessage(line, msg));
+					result.errors.push(utils.createErrorMessage(line, msg));
 				}
 			}
 			// check for exactly 1 space before "{"
@@ -145,9 +139,9 @@ var validateSpacing = function(lines){
 			if(line.charAt(open-1) !== " " && line.charAt(open-2) === " "){
 				var line = (i+1);
 				var msg = "bad spacing";
-				result.errors.push(createErrorMessage(line, msg));
+				result.errors.push(utils.createErrorMessage(line, msg));
 			}
-		} else if(contains(line, ":")){
+		} else if(utils.contains(line, ":")){
 			// declaration
 			// check for 0 space before ":" and 1 space after
 			var colon = line.indexOf(":");
@@ -155,39 +149,32 @@ var validateSpacing = function(lines){
 				|| line.charAt(colon+2) === " "){
 				var line = (i+1);
 				var msg = "bad spacing";
-				result.errors.push(createErrorMessage(line, msg));
+				result.errors.push(utils.createErrorMessage(line, msg));
 			}
 			// check for ";", with 0 space before
 			var semicolon = line.indexOf(";");
 			if(semicolon === -1){
 				var line = (i+1);
 				var msg = "no semicolon";
-				result.errors.push(createErrorMessage(line, msg));
+				result.errors.push(utils.createErrorMessage(line, msg));
 			} else {
 				if(line.charAt(semicolon-1) === " "){
 					var line = (i+1);
 					var msg = "bad spacing";
-					result.errors.push(createErrorMessage(line, msg));
+					result.errors.push(utils.createErrorMessage(line, msg));
 				}
 			}
-		} else if(contains(line, "}")){
+		} else if(utils.contains(line, "}")){
 			// closer
 			// check it's the only thing on that line
 			if(line.charAt(0) !== "}" || line.slice(1).search(/\S/) !== -1){
 				var line = (i+1);
 				var msg = "bad spacing";
-				result.errors.push(createErrorMessage(line, msg));
+				result.errors.push(utils.createErrorMessage(line, msg));
 			}
 		}
 	}
 	return result;
-}
-
-var createErrorMessage = function(line, msg){
-	var err_msg = {};
-	err_msg.line = line;
-	err_msg.msg = msg;
-	return err_msg;
 }
 
 module.exports = {
