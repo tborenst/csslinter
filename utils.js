@@ -1,12 +1,15 @@
 //====
 // utils.js
-// Contains utility functions that are used my multiple files in this project
+// Contains utility functions that are used my multiple files in this project.
 //====
+
+var util = require('util');
+
 
 utils = {
     //====
     // Helper function that creates and returns an error message object given a line
-    // number and a message
+    // number and a message.
     //====
     createErrorMessage: function(line, msg){
         var err_msg = {line: line, msg: msg};
@@ -18,6 +21,17 @@ utils = {
     //====
     contains: function(string, substring){
         return (string.indexOf(substring) !== -1);
+    },
+
+    //====
+    // Parses out required information from css-parse's errors.
+    //====
+    extractCssParseErrorInfo: function(error){
+        var errString = error.toString();
+        var errLine = error.line;
+        // magic number 7 to get rid of "Error: " at beginning of error.
+        var errMsg = errString.slice(7, errString.indexOf("near"));
+        return utils.createErrorMessage(errLine, errMsg);
     }
 }
 

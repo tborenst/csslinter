@@ -12,22 +12,20 @@ var lineByLine = require("./linebyline.js");
 //====
 // Begins the parsing process using a path to a css file.
 // Callback should accept (err, result), where result is an object:
-// {errors: [errmsg1, errmsg2, ...]}
-// Difference between 'err' and 'result' is that 'err' is for system error
-// and 'result' contains the errors found by the linter itself.
+// {errors: [{msg: string, line: int}, ...]}
 //====
 var parseCssFile = function(path, callback){
 	fs.readFile(path, function(err, data){
 		if(err) callback(err, null);
 		var text = data.toString().replace(/\t/g, "    "); // tabs -> 4 spaces
-		var result = parseCssText(text);
-		callback(null, result);
+		parseCssText(text, callback);
 	});
 }
 
 //====
 // Begins the parsing process using a string of CSS.
-// Returns object: {errors: [errmsg1, errmsg2, ...]}
+// Callback should accept (err, result), where result is an object:
+// {errors: [{msg: string, line: int}, ...]}
 // Tests for:
 // - valid property/value pairs.
 // - valid indentation (4 space tabs OR tab characters).
@@ -36,8 +34,16 @@ var parseCssFile = function(path, callback){
 // - valid declaration count (no more than 25 in a rule).
 // - valid spacing according to guidelines (see 'linebyline.js').
 //====
-var parseCssText = function(text){
-	var tree = cssparse(text, {position: true});
+var parseCssText = function(text, callback){
+	var tree = null;
+	try {
+		tree = cssparse(text, {position: true});
+	} catch(err) {
+		// return syntax error to callback in correct form
+		var result = {errors: [utils.extractCssParseErrorInfo(err)]};
+		callback(null, result);
+		return;
+	}
 	var all_results = [validatePropertyValuePairs(tree, cssDictionary),
 				validateIndentation(tree, 4),
 				validateNewlines(tree),
@@ -51,7 +57,7 @@ var parseCssText = function(text){
 			combined_result.errors.push(res.errors[j]);
 		}
 	}
-	return combined_result;
+	callback(null, combined_result);
 }
 
 //====
