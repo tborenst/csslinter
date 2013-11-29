@@ -308,10 +308,6 @@ var getAllClasses = function(htmlFilePath, callback){
 	});
 }
 
-parseCssFile("./test.css", function(err, res){
-	console.log(res);
-})
-
 module.exports = {
 	parseCssFile: parseCssFile,
 	parseCssText: parseCssText
