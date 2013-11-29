@@ -9,9 +9,7 @@ utils = {
     // number and a message
     //====
     createErrorMessage: function(line, msg){
-        var err_msg = {};
-        err_msg.line = line;
-        err_msg.msg = msg;
+        var err_msg = {line: line, msg: msg};
         return err_msg;
     },
 

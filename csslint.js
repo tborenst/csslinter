@@ -235,11 +235,11 @@ var validateDeclarationCount = function(tree, count){
 	for(var i = 1; i < rules.length; i++){
 		var rule = rules[i];
 		var decs = rule.declarations;
-		if(ruleIsOneLiner(rule) && decs.length > 1){
+		if(decs && ruleIsOneLiner(rule) && decs.length > 1){
 			var err_line = rule.position.start.line;
 			var msg = "rule (oneliner) has too many declarations";
 			result.errors.push(utils.createErrorMessage(err_line, msg));
-		} else if(decs.length > count) {
+		} else if(decs && decs.length > count) {
 			var err_line = rule.position.start.line;
 			var msg = "rule has too many declarations"
 			result.errors.push(utils.createErrorMessage(err_line, msg));
@@ -307,6 +307,10 @@ var getAllClasses = function(htmlFilePath, callback){
 		});
 	});
 }
+
+parseCssFile("./test.css", function(err, res){
+	console.log(res);
+})
 
 module.exports = {
 	parseCssFile: parseCssFile,
