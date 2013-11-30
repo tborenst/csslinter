@@ -65,7 +65,7 @@ And hence will be flagged as an error by the linter (two spaces after ":").
 ##How to Use
 `csslint.js` exports two functions: `parseCssFile(path, callback)` and `parseCssText(text)`.
 
-`parseCssFile` is asynchronous (clearly...) and the callback passed to it should take two arguments `(err, result)`. If there are any errors with the linter itself or any of the dependencies, `err` will be set to true, and otherwise null. The `result` object is of the form `{errors: [{msg: string, line: int}, ...]`. The same `result` object is returned *synchronously* from `parseCssText`.
+`parseCssFile()` is asynchronous (clearly...) and the callback passed to it should take two arguments `(err, result)`. If there are any errors with the linter itself or any of the dependencies, `err` will be set to true, and otherwise null. The `result` object is of the form `{errors: [{msg: string, line: int}, ...]`. The same goes for `parseCssText()`.
 
 ##Note About Declaration Count
 If you would like to change the number of declaration counts allowed within a single rule, see the 6th line of the `parseCssText` function in `csslint.js`.

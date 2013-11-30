@@ -1,6 +1,6 @@
 {
   "name": "csslinter",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "CSS linter",
   "main": "csslint.js",
   "repository"    : {"type": "git", "url": "git@github.com:tborenst/csslint.git"},
