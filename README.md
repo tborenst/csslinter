@@ -4,7 +4,7 @@ This is a CSS linter created for the Carnegie Mellon University course *'15-237:
 
 In order to download and use, simply `npm install csslinter`.
 
-MIT License.
+MIT license.
 
 ##Functionality
 Currently, the css linter has the following functionality:
