@@ -6,7 +6,6 @@ var utils = require("./utils");
 var fs = require("fs");
 var cssparse = require("css-parse");
 var cssDictionary = require("./dictionary.js");
-// var loadHtml = require("./loadhtml.js");
 var lineByLine = require("./linebyline.js");
 
 //====
@@ -253,66 +252,6 @@ var validateDeclarationCount = function(tree, count){
 	}
 	return result;
 }
-
-// //====
-// // Returns all ids from an .html file.
-// // 'callback' should take arguments (err, ids), where ids is an array of ids
-// // in the form "#some_id".
-// //====
-// var getAllIds = function(htmlFilePath, callback){
-// 	var ids = [];
-// 	fs.readFile(htmlFilePath, function(err, data){
-// 		if(err){
-// 			callback(err, null);
-// 			return;
-// 		}
-// 		var html = data.toString();
-// 		loadHtml(html, function(err, window){
-// 			if(err) { 
-// 				callback(err, null);
-// 				return;
-// 			}
-// 			var $ = window.$;
-// 			$("[id]").each(function(){
-// 				var id = $(this).attr("id");
-// 				if(ids.indexOf("#" + id) === -1){
-// 					ids.push("#" + id);
-// 				}
-// 			});
-// 			callback(null, ids);
-// 		});
-// 	});
-// }
-
-// //====
-// // Returns all classes from an .html file.
-// // 'callback' should take arguments (err, classes), where classes is an array of
-// // classes in the form ".some_class".
-// //====
-// var getAllClasses = function(htmlFilePath, callback){
-// 	var classes = [];
-// 	fs.readFile(htmlFilePath, function(err, data){
-// 		if(err) {
-// 			callback(err, null);
-// 			return;
-// 		}
-// 		var html = data.toString();
-// 		loadHtml(html, function(err, window){
-// 			if(err) {
-// 				callback(err, null);
-// 				return;
-// 			}
-// 			var $ = window.$;
-// 			$("[class]").each(function(){
-// 				var cls = $(this).attr("class");
-// 				if(classes.indexOf("." + cls) === -1 && cls !== "jsdom"){
-// 					classes.push("." + cls);
-// 				}
-// 			});
-// 			callback(null, classes);
-// 		});
-// 	});
-// }
 
 module.exports = {
 	parseCssFile: parseCssFile,

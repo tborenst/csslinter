@@ -1,6 +1,6 @@
 {
   "name": "csslinter",
-  "version": "1.0.8",
+  "version": "1.0.10",
   "description": "CSS linter",
   "main": "csslint.js",
   "repository"    : {"type": "git", "url": "git@github.com:tborenst/csslint.git"},
@@ -20,7 +20,6 @@
     "csslint.js",
     "dictionary.js",
     "linebyline.js",
-    "loadhtml.js",
     "utils.js"
   ],
   "license": "MIT",
