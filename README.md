@@ -16,8 +16,6 @@ Currently, the css linter has the following functionality:
 * Validating declaration count (default: no more than 25 declarations/rule).
 * Validating correct spacing according to our style guide (see below for more info).
 
-Additionally, the code exists for extracting *ids* and *classes* from .HTML files in case you want to add the functionality to cross-reference *ids* or *classes* between .HTML and .CSS files. The code is in `csslint.js`, but not exported to the module. 
-
 ##Property-Value Validation
 In order to validate the correctness of properties and their values, we use the file `dictionary.js`. Currently, it only contains very few properties and values since adding them all would be very time consuming.
 
