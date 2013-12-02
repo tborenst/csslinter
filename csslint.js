@@ -6,7 +6,7 @@ var utils = require("./utils");
 var fs = require("fs");
 var cssparse = require("css-parse");
 var cssDictionary = require("./dictionary.js");
-var loadHtml = require("./loadhtml.js");
+// var loadHtml = require("./loadhtml.js");
 var lineByLine = require("./linebyline.js");
 
 //====
