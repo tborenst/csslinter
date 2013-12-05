@@ -128,7 +128,7 @@ var validateSpacing = function(lines){
 			// check for spaces after any ","
 			var broken = line.split(",");
 			for(var j = 1; j < broken.length; j++){
-				if(broken[j].charAt(0) !== " " || broken[j].charAt(1) === " "){
+				if(broken[j] !== "" && (broken[j].charAt(0) !== " " || broken[j].charAt(1) === " ")){
 					var err_line = (i+1);
 					var msg = "bad spacing";
 					result.errors.push(utils.createErrorMessage(err_line, msg));
