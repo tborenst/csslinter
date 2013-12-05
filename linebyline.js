@@ -87,7 +87,7 @@ var validateSpacing = function(lines){
 	var result = {errors: []}
 	for(var i = 0; i < lines.length; i++){
 		var line = lines[i];
-		if(utils.contains(line, "{") && utils.contains(line, "}") && utils.contains(line, ":")){
+		if(utils.contains(line, "{") && utils.contains(line, "}")){
 			// oneliner
 			// check for exactly one space after "{"
 			var open = line.indexOf("{");
@@ -123,7 +123,7 @@ var validateSpacing = function(lines){
 					result.errors.push(utils.createErrorMessage(err_line, msg));
 				}
 			}
-		} else if(utils.contains(line, "{")){
+		} else if(utils.contains(line, "{") || (utils.contains(line, ",") && line.charAt(0) !== " ")){
 			// selector line
 			// check for spaces after any ","
 			var broken = line.split(",");
@@ -136,12 +136,12 @@ var validateSpacing = function(lines){
 			}
 			// check for exactly 1 space before "{"
 			var open = line.indexOf("{");
-			if(line.charAt(open-1) !== " " && line.charAt(open-2) === " "){
+			if(open > 0 && line.charAt(open-1) !== " " && line.charAt(open-2) === " "){
 				var err_line = (i+1);
 				var msg = "bad spacing";
 				result.errors.push(utils.createErrorMessage(err_line, msg));
 			}
-		} else if(utils.contains(line, ":")){
+		} else if(utils.contains(line, ":") && line.charAt(0) !== " "){
 			// declaration
 			// check for 0 space before ":" and 1 space after
 			var colon = line.indexOf(":");
