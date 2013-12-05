@@ -217,7 +217,7 @@ var validatePropertyUniqueness = function(tree){
 					// property already exists in this rule
 					var err_line = dec.position.start.line;
 					var msg = "duplicate property (" + property + ")"; 
-					result.messages.push(utils.createErrorMessage(err_line, msg));
+					result.errors.push(utils.createErrorMessage(err_line, msg));
 				} else {
 					properties.push(property);
 				}
