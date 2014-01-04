@@ -13,11 +13,11 @@ var lineByLine = require("./linebyline.js");
 // Callback should accept (err, result), where result is an object:
 // {errors: [{msg: string, line: int}, ...]}
 //====
-var parseCssFile = function(path, callback){
+var lintCssFile = function(path, callback){
 	fs.readFile(path, function(err, data){
 		if(err) callback(err, null);
 		var text = data.toString().replace(/\t/g, "    "); // tabs -> 4 spaces
-		parseCssText(text, callback, path);
+		lintCssText(text, callback, path);
 	});
 }
 
@@ -33,7 +33,7 @@ var parseCssFile = function(path, callback){
 // - valid declaration count (no more than 25 in a rule).
 // - valid spacing according to guidelines (see 'linebyline.js').
 //====
-var parseCssText = function(text, callback, path){ // path is optional, for use by lintCssFile()
+var lintCssText = function(text, callback, path){ // path is optional, for use by lintCssFile()
 	var tree = null;
 	path = (path) ? path : null;
 	try {
@@ -255,6 +255,6 @@ var validateDeclarationCount = function(tree, count, path){
 }
 
 module.exports = {
-	parseCssFile: parseCssFile,
-	parseCssText: parseCssText
+	lintCssFile: lintCssFile,
+	lintCssText: lintCssText
 }

@@ -4,7 +4,8 @@ This is a CSS linter created for the Carnegie Mellon University course *'15-237:
 
 In order to download and use, simply `npm install csslinter`.
 
-MIT license.
+* MIT license.
+* Copyright Carnegie Mellon University 2013.
 
 ##Functionality
 Currently, the css linter has the following functionality:
@@ -61,6 +62,6 @@ body {
 And hence will be flagged as an error by the linter (two spaces after ":").
 
 ##How to Use
-`csslint.js` exports two functions: `parseCssFile(path, callback)` and `parseCssText(text)`.
+`csslint.js` exports two functions: `lintCssFile(path, callback)` and `lintCssText(text)`.
 
-`parseCssFile()` is asynchronous (clearly...) and the callback passed to it should take two arguments `(err, result)`. If there are any errors with the linter itself or any of the dependencies, `err` will be set to true, and otherwise null. The `result` object is of the form `{errors: [{file: string, msg: string, line: int}, ...]}`. The same goes for `parseCssText()`.
+`lintCssFile()` is asynchronous (clearly...) and the callback passed to it should take two arguments `(err, result)`. If there are any errors with the linter itself or any of the dependencies, `err` will be set to true, and otherwise null. The `result` object is of the form `{errors: [{file: string, msg: string, line: int}, ...]}`. The same goes for `lintCssText()`.

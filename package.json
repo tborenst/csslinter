@@ -1,7 +1,7 @@
 {
   "name": "csslinter",
   "version": "1.0.14",
-  "description": "CSS linter",
+  "description": "Simple and basic CSS linter.",
   "main": "csslint.js",
   "repository"    : {"type": "git", "url": "git@github.com:tborenst/csslint.git"},
   "keywords": [
