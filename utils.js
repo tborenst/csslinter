@@ -11,8 +11,8 @@ utils = {
     // Helper function that creates and returns an error message object given a line
     // number and a message.
     //====
-    createErrorMessage: function(line, msg){
-        var err_msg = {line: line, msg: msg};
+    createErrorMessage: function(line, msg, path){
+        var err_msg = {file: path, line: line, msg: msg};
         return err_msg;
     },
 

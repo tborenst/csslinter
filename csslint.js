@@ -17,7 +17,7 @@ var parseCssFile = function(path, callback){
 	fs.readFile(path, function(err, data){
 		if(err) callback(err, null);
 		var text = data.toString().replace(/\t/g, "    "); // tabs -> 4 spaces
-		parseCssText(text, callback);
+		parseCssText(text, callback, path);
 	});
 }
 
@@ -33,8 +33,9 @@ var parseCssFile = function(path, callback){
 // - valid declaration count (no more than 25 in a rule).
 // - valid spacing according to guidelines (see 'linebyline.js').
 //====
-var parseCssText = function(text, callback){
+var parseCssText = function(text, callback, path){ // path is optional, for use by lintCssFile()
 	var tree = null;
+	path = (path) ? path : null;
 	try {
 		tree = cssparse(text, {position: true});
 	} catch(err) {
@@ -43,12 +44,12 @@ var parseCssText = function(text, callback){
 		callback(null, result);
 		return;
 	}
-	var all_results = [validatePropertyValuePairs(tree, cssDictionary),
-				validateIndentation(tree, 4),
-				validateNewlines(tree),
-				validatePropertyUniqueness(tree),
-				validateDeclarationCount(tree, 25),
-				lineByLine.analyzeCssText(text)];
+	var all_results = [validatePropertyValuePairs(tree, cssDictionary, path),
+		validateIndentation(tree, 4, path),
+		validateNewlines(tree, path),
+		validatePropertyUniqueness(tree, path),
+		validateDeclarationCount(tree, 25, path),
+		lineByLine.analyzeCssText(text, path)];
 	var combined_result = {errors: []};
 	for(var i = 0; i < all_results.length; i++){
 		var res = all_results[i];
@@ -64,7 +65,7 @@ var parseCssText = function(text, callback){
 // in the tree according to the dictionary: {"property": ["val1", "val2", ...]}.
 // Returns object: {errors: [errmsg1, errmsg2, ...]}
 //====
-var validatePropertyValuePairs = function(tree, dictionary){
+var validatePropertyValuePairs = function(tree, dictionary, path){
 	var result = {errors: []};
 	var rules = tree.stylesheet.rules;
 	for(var i = 0; i < rules.length; i++){
@@ -81,7 +82,7 @@ var validatePropertyValuePairs = function(tree, dictionary){
 					var err_line = dec.position.start.line;
 					var msg = "invalid property/value pair (" 
 						    + property + "/" + value + ")";
-					result.errors.push(utils.createErrorMessage(err_line, msg));
+					result.errors.push(utils.createErrorMessage(err_line, msg, path));
 				}
 			}
 		}
@@ -120,7 +121,7 @@ var validatePropertyValue = function(property, value, dictionary){
 // spaces an indentation should have. Defaults to 4 spaces.
 // Returns an object: {errors: [errmsg1, errmsg2, ...]}.
 //====
-var validateIndentation = function(tree, spaces){
+var validateIndentation = function(tree, spaces, path){
 	spaces = spaces || 4;
 	var result = {errors: []};
 	var rules = tree.stylesheet.rules;
@@ -131,12 +132,12 @@ var validateIndentation = function(tree, spaces){
 		if(rule.type !== "comment" && rPos.start.column !== 1){
 			var err_line = rPos.start.line;
 			var msg = "bad indentation";
-			result.errors.push(utils.createErrorMessage(err_line, msg));
+			result.errors.push(utils.createErrorMessage(err_line, msg, path));
 		}
 		if(rule.type !== "comment" && !ruleIsOneLiner(rule) && rPos.end.column !== 2){
 			var err_line = rPos.end.line;
 			var msg = "bad indentation";
-			result.errors.push(utils.createErrorMessage(err_line, msg));
+			result.errors.push(utils.createErrorMessage(err_line, msg, path));
 		}
 		if(rule.type !== "comment" && !ruleIsOneLiner(rule)){
 			// only check declaration indentation for non-oneliners
@@ -148,7 +149,7 @@ var validateIndentation = function(tree, spaces){
 					if(dec.type !== "comment" && dPos.start.column !== spaces+1){
 						var err_line = dPos.start.line;
 						var msg = "bad indentation";
-						result.errors.push(utils.createErrorMessage(err_line, msg));
+						result.errors.push(utils.createErrorMessage(err_line, msg, path));
 					}
 				}
 			}
@@ -170,7 +171,7 @@ var ruleIsOneLiner = function(rule){
 // Validates that after each rule and after each declaration there is a newline.
 // Returns an object: {errors: [errmsg1, errmsg2, ...]}.
 //====
-var validateNewlines = function(tree){
+var validateNewlines = function(tree, path){
 	var result = {errors: []};
 	var rules = tree.stylesheet.rules;
 	for(var i = 1; i < rules.length + 1; i++){
@@ -179,7 +180,7 @@ var validateNewlines = function(tree){
 		if(i !== rules.length && rule1.position.end.line === rule2.position.start.line){
 			var err_line = rule1.position.end.line;
 			var msg = "missing newline between rules"; 
-			result.errors.push(utils.createErrorMessage(err_line, msg));
+			result.errors.push(utils.createErrorMessage(err_line, msg, path));
 		}
 		var decs = rule1.declarations;
 		if(decs){
@@ -190,7 +191,7 @@ var validateNewlines = function(tree){
 					&& dec1.type !== "comment" && dec2.type !== "comment"){
 					var err_line = dec1.position.end.line;
 					var msg = "missing newline between declarations"
-					result.errors.push(utils.createErrorMessage(err_line, msg));
+					result.errors.push(utils.createErrorMessage(err_line, msg, path));
 				}
 			}
 		}
@@ -202,7 +203,7 @@ var validateNewlines = function(tree){
 // Validates that within each rule, every property shows up no more than once.
 // Returns an object: {errors: [errmsg1, errmsg2, ...]}.
 //====
-var validatePropertyUniqueness = function(tree){
+var validatePropertyUniqueness = function(tree, path){
 	var result = {errors: []};
 	var rules = tree.stylesheet.rules;
 	for(var i = 0; i < rules.length; i++){
@@ -217,7 +218,7 @@ var validatePropertyUniqueness = function(tree){
 					// property already exists in this rule
 					var err_line = dec.position.start.line;
 					var msg = "duplicate property (" + property + ")"; 
-					result.errors.push(utils.createErrorMessage(err_line, msg));
+					result.errors.push(utils.createErrorMessage(err_line, msg, path));
 				} else {
 					properties.push(property);
 				}
@@ -233,7 +234,7 @@ var validatePropertyUniqueness = function(tree){
 // Also checks that oneliners do not have more than one declaration.
 // Returns an object: {errors: [errmsg1, errmsg2, ...]}.
 //====
-var validateDeclarationCount = function(tree, count){
+var validateDeclarationCount = function(tree, count, path){
 	count = count || 25;
 	var result = {errors: []};
 	var rules = tree.stylesheet.rules;
@@ -243,11 +244,11 @@ var validateDeclarationCount = function(tree, count){
 		if(decs && ruleIsOneLiner(rule) && decs.length > 1){
 			var err_line = rule.position.start.line;
 			var msg = "rule (oneliner) has too many declarations";
-			result.errors.push(utils.createErrorMessage(err_line, msg));
+			result.errors.push(utils.createErrorMessage(err_line, msg, path));
 		} else if(decs && decs.length > count) {
 			var err_line = rule.position.start.line;
 			var msg = "rule has too many declarations"
-			result.errors.push(utils.createErrorMessage(err_line, msg));
+			result.errors.push(utils.createErrorMessage(err_line, msg, path));
 		}
 	}
 	return result;
